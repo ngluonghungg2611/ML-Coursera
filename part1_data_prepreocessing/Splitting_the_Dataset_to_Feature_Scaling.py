@@ -23,7 +23,6 @@ ColumnTransformer = ColumnTransformer([('one_hot_encoder', OneHotEncoder(categor
 X = ColumnTransformer.fit_transform(X)
 print('\n After onehot encoder column name: \n',X)
 
-
 labelencoder_y = LabelEncoder()
 y = labelencoder_y.fit_transform(y)
 print('\nAfter label encoder column label',y)
@@ -36,6 +35,15 @@ print('X_test: \n',X_test)
 print('y_train: \n',y_train)
 print('y_test: \n',y_test)
 
+# Feature Scaling
+from sklearn.preprocessing import StandardScaler
+
+sc_X = StandardScaler()
+X_train  = sc_X.fit_transform(X_train)
+X_test = sc_X.transform(X_test)
+
+print(X_train)
+print(X_test)
 
 
 
