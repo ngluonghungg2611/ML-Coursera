@@ -12,32 +12,31 @@ SimpleImputer  = SimpleImputer.fit(X)
 X = SimpleImputer.transform(X)
 # print(X)
 dataset.iloc[:,1:3] = X
-print('After process missing data: \n', dataset)
+# print('After process missing data: \n', dataset)
 
 #   Encoding categorical data
 
 Y = dataset.iloc[:,:-1].values
-print(Y)
+# print(Y)
 
-print('\n Get label on Name with LableEncoder: \n')
+# print('\n Get label on Name with LableEncoder: \n')
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 label_encoder_Y = LabelEncoder()
 Y[:,0] = label_encoder_Y.fit_transform(Y[:,0])
-print(Y[:,0])
-
-print('\n Get label on Name with ColumnTransformer: \n')
+# print(Y[:,0])
+#
+# print('\n Get label on Name with ColumnTransformer: \n')
 CT = ColumnTransformer([('one_hot_encoder', OneHotEncoder(categories='auto'), [2])], remainder='passthrough')
-# onehot_encoder = OneHotEncoder(categories='auto')
 Y = CT.fit_transform(Y)
 print(Y[:,:3])
 
 # onehot encoder label
-print('\n Get label  on label with LabelEncoder: \n')
+# print('\n Get label  on label with LabelEncoder: \n')
 label = dataset.iloc[:,3].values
-print(label)
+# print(label)
 label_encoder = LabelEncoder()
 label = label_encoder.fit_transform(label)
-print(label)
+# print(label)
 # print(label_encoder_Y)
-print(22)
+# print(22)
