@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\part7_Random_Forest_classification\Social_Network_Ads.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
