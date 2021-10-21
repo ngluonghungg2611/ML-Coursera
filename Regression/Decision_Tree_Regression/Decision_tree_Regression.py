@@ -50,6 +50,9 @@ plt.title('Truth of Bluff Decision Tree Regression')
 plt.xlabel('Position level')
 plt.ylabel('Salary')
 plt.show()
+'''
+    Tương đương với Decision Tree Classification
+'''
 
 
 
