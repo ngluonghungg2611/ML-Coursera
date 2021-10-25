@@ -1,0 +1,754 @@
+WEBVTT
+
+00:00.980 --> 00:03.090
+Hello and welcome back to the course of machine learning.
+
+00:03.140 --> 00:06.920
+Today we're talking about the intuition behind the a priori algorithm.
+
+00:07.040 --> 00:08.650
+So let's get started.
+
+00:08.860 --> 00:11.410
+And we're going to get started by talking about a story.
+
+00:11.420 --> 00:19.820
+It's a somewhat legend of data science or religion that is quite well known and in a sense you may have
+
+00:19.820 --> 00:22.720
+heard of this alleged It's not a myth.
+
+00:22.730 --> 00:23.950
+It actually happened.
+
+00:23.970 --> 00:31.970
+But as you know the things that happened a long time ago and then time passes and the facts get the
+
+00:31.970 --> 00:32.330
+story.
+
+00:32.330 --> 00:39.620
+But I'll tell you my story of this legend and it might not be exactly correct but this is how I know
+
+00:40.160 --> 00:41.670
+about and how I've heard about it.
+
+00:41.840 --> 00:50.330
+So what do you think the commonality is between these two products Pampers or diapers and beer.
+
+00:50.330 --> 00:56.880
+What do you think they have in common and why are they part of this urban legend.
+
+00:56.900 --> 00:58.600
+Why are they part of the state of science.
+
+00:59.330 --> 01:02.420
+Well as the story goes.
+
+01:02.690 --> 01:10.490
+A company we are not going to name the company but a company that is actually actually like a convenience
+
+01:10.490 --> 01:17.760
+store and did some analytics around the products that people are purchasing.
+
+01:18.280 --> 01:23.030
+And so they were looking at you know what people are checking out with.
+
+01:23.030 --> 01:27.830
+What are the commonalities and they analyzed thousands and thousands and thousands of transactions so
+
+01:27.830 --> 01:34.220
+thousands of people who actually checked out if not tens of thousands and they found a very interesting
+
+01:34.220 --> 01:43.250
+thing that very often during certain times of the day when people shop in the afternoon between 6 and
+
+01:43.790 --> 01:45.210
+9 p.m..
+
+01:45.410 --> 01:54.050
+People who buy diapers also buy beer and it was like out of the blue completely out of the blue like
+
+01:54.080 --> 01:57.680
+how why these two prices completely not connected right.
+
+01:57.680 --> 02:03.320
+Why would somebody buy beer when they're buying diapers or why buy diapers when they're buying beer.
+
+02:03.380 --> 02:03.620
+Right.
+
+02:03.620 --> 02:11.060
+So that was the fact that they came across in the data and the explanations as fact.
+
+02:11.060 --> 02:18.800
+One of the plausible explanations is that in the afternoons or in the evenings when the husband gets
+
+02:18.800 --> 02:26.520
+home and they're look like him though her husband and the wife are taking care of their baby.
+
+02:26.630 --> 02:31.730
+They sometimes find that they run out of diapers and who has to go pick up the diapers of all the husband
+
+02:31.730 --> 02:33.050
+has to go pick up the diapers.
+
+02:33.050 --> 02:33.680
+Right.
+
+02:33.680 --> 02:38.040
+Or the wife sends a husband to go pick up the diapers and while he's picking up the diapers because
+
+02:38.040 --> 02:40.310
+it's really after hours after work.
+
+02:40.370 --> 02:42.260
+He also he's already in the convenience store.
+
+02:42.260 --> 02:43.970
+He also picks up some beer.
+
+02:44.060 --> 02:44.490
+Right.
+
+02:44.510 --> 02:51.080
+And so that is a plausible explanation might be case might not be the case but sounds reasonable and
+
+02:51.170 --> 02:54.970
+based on that so that's something that you can really think of it just by yourself.
+
+02:54.980 --> 02:56.050
+But that comes from the data.
+
+02:56.060 --> 02:56.430
+Right.
+
+02:56.450 --> 03:01.350
+And based on that you can decide how to arrange products in your store right.
+
+03:01.400 --> 03:07.310
+So some stores might decide to put these two closer to entice people to buy a beer when they're buying
+
+03:07.310 --> 03:07.630
+diapers.
+
+03:07.640 --> 03:11.030
+But actually a lot of stores do the opposite.
+
+03:11.030 --> 03:19.520
+There are a lot of stores separate beer and diapers right just like they try to separate and you probably
+
+03:19.520 --> 03:26.030
+noticed this from your convenience store that they try to separate bread and milk as far as possible.
+
+03:26.030 --> 03:26.360
+Why.
+
+03:26.360 --> 03:31.060
+Because that way they really know that these two products are bought together.
+
+03:31.310 --> 03:36.400
+And so you actually have to walk through the whole store to pick up.
+
+03:36.410 --> 03:40.190
+You know you've picked up your bread and then to get to the milk you have to get all the way through
+
+03:40.190 --> 03:44.220
+the whole store to the completely opposite corner of the store.
+
+03:44.270 --> 03:49.640
+So as you're walking through the store you see more other products and you're more likely to pick up
+
+03:49.700 --> 03:53.990
+an additional item that you weren't actually planning on buying when you got to the store in the first
+
+03:53.990 --> 03:54.170
+place.
+
+03:54.190 --> 03:57.790
+So there's a lot of interesting marketing tactics that are used based on this data.
+
+03:57.800 --> 04:00.180
+But the question is how do you get to this data.
+
+04:00.290 --> 04:04.070
+And one of the ways to get to it is that a priori algorithm.
+
+04:04.130 --> 04:07.880
+So let's talk about a priori and a bit more detail now.
+
+04:07.880 --> 04:08.310
+All right.
+
+04:08.340 --> 04:15.330
+So it really is about people who bought something also bought something else or watched something also
+
+04:15.340 --> 04:21.860
+or something else who did something also did something else so it analyzes and this whole association
+
+04:22.250 --> 04:29.600
+rule learning part of course is all about analyzing when things come in pairs or in triplicates or in
+
+04:29.790 --> 04:38.240
+in C not in sequence but they are combined together for some reason looking for those rules and those
+
+04:38.330 --> 04:40.940
+ways that this happens.
+
+04:41.000 --> 04:44.050
+All right so let's have a look for instance.
+
+04:44.050 --> 04:45.050
+Movie recommendation right.
+
+04:45.050 --> 04:49.150
+So you've got your user IDs you've got two movies that the people liked.
+
+04:49.280 --> 04:53.530
+Movie 1 2 3 4 movie 1 and 2 for the second person and so on.
+
+04:53.750 --> 04:59.600
+And from here just by looking at it even if out not knowing anything about Association rule learning
+
+04:59.600 --> 05:06.130
+or a priori the a priori algorithm you can really tell that there are some potential rules that can
+
+05:06.130 --> 05:09.490
+come out of this that for instance everybody who watches movie one.
+
+05:09.610 --> 05:15.730
+Everybody but it is likely that people who watch movie one will or who like movie one will also like
+
+05:15.730 --> 05:16.920
+movie number two.
+
+05:17.140 --> 05:22.270
+And people who like movie Number two are quite likely to also like moving on before.
+
+05:22.510 --> 05:27.260
+And people who look like in a movie a one are also quite likely to be like movie number three.
+
+05:27.260 --> 05:32.080
+So you can you can come up with lots of different potential rules but some are going to be stronger
+
+05:32.080 --> 05:37.360
+some are going to be weaker and we want to find the very strong ones in order to build our business
+
+05:37.360 --> 05:42.190
+decisions or other decisions on those rules.
+
+05:42.200 --> 05:48.330
+We can see in the data right we don't have to go and ask people hey do you like movie number one and
+
+05:48.340 --> 05:50.070
+would you like movie number two because of that.
+
+05:50.060 --> 05:53.850
+Do you like movie number two or what does it taste and preference we can see this thing from the data
+
+05:53.850 --> 05:59.260
+and we want to extract this information and as long as our you know we have a large enough sample size
+
+05:59.500 --> 06:05.350
+it's not just like five people if it's 50000 or 500000 people that we're analyzing we can come up with
+
+06:05.560 --> 06:08.740
+quite some quite solid rules.
+
+06:08.740 --> 06:19.410
+All right so here's another example where we've got a market basket so example of people who buy grocer
+
+06:19.420 --> 06:25.050
+not just groceries but more kind of like a restaurant or a takeaway place.
+
+06:25.150 --> 06:29.300
+And here you can see there's a link obviously in burgers and french fries.
+
+06:29.320 --> 06:29.790
+Interesting.
+
+06:29.800 --> 06:31.120
+Vegetables and fruits.
+
+06:31.120 --> 06:33.530
+People trying to be healthy burgers French fries and ketchup.
+
+06:33.760 --> 06:37.440
+Again these are potential rules not necessarily the ones that we're going to take away from there.
+
+06:37.450 --> 06:43.370
+This is just an example of something that you might observe visually just by looking at the deficit.
+
+06:44.020 --> 06:44.310
+All right.
+
+06:44.320 --> 06:47.130
+So how does the a priori algorithm work.
+
+06:47.260 --> 06:49.990
+Well the apriori algorithm has three parts to it.
+
+06:50.020 --> 06:53.660
+It's got the support the confidence and the lift.
+
+06:53.710 --> 06:59.160
+So we're going to start up with the support and you will see that it's very similar to something we've
+
+06:59.190 --> 07:00.010
+already discussed.
+
+07:00.010 --> 07:09.470
+It's very similar to the way we talked about intuition for the Beijing for the Navy base classifiers.
+
+07:09.580 --> 07:10.680
+So let's have a look here.
+
+07:10.730 --> 07:20.170
+We were movie recommendations support for movie M is the number is defined as the number of users who
+
+07:20.170 --> 07:23.670
+watched movie divided by the total number of users.
+
+07:23.680 --> 07:24.240
+Right.
+
+07:24.550 --> 07:27.380
+And market Buskin optimization same thing.
+
+07:27.610 --> 07:32.970
+Number of transactions containing an item I divided by the total number of transactions.
+
+07:33.040 --> 07:40.930
+Let's have a look at an illustration here we've got 100 people so we've got five rows and 20 columns
+
+07:40.930 --> 07:43.870
+of human beings.
+
+07:44.080 --> 07:50.340
+And let's see how many of them let's say we're talking about a movie.
+
+07:50.590 --> 07:54.690
+And I'm going to give an example of one of my favorite movies ex machina.
+
+07:54.760 --> 07:57.000
+And if you haven't seen it definitely check it out.
+
+07:57.040 --> 07:59.050
+It's all about AI and machine learning.
+
+07:59.170 --> 08:04.030
+So let's say let's see how many of these people have actually seen ex machina.
+
+08:04.300 --> 08:05.110
+So there we go.
+
+08:05.110 --> 08:10.800
+There's 10 people who have seen ex machina right out of 100.
+
+08:10.810 --> 08:11.710
+So what does that mean.
+
+08:11.710 --> 08:15.070
+That means our support here is 10 percent good.
+
+08:15.160 --> 08:15.770
+OK.
+
+08:15.940 --> 08:17.630
+Now let's move on to Step Two.
+
+08:17.680 --> 08:20.450
+Step two is we need to find the confidence.
+
+08:20.530 --> 08:21.430
+What is the confidence.
+
+08:21.430 --> 08:25.080
+Well confidence is defined as the number.
+
+08:25.090 --> 08:25.990
+Let's go for a movie.
+
+08:25.990 --> 08:32.070
+So the number of people who have seen movies and wanted them to divide with them.
+
+08:32.080 --> 08:33.350
+People have seen a movie.
+
+08:33.370 --> 08:39.490
+So here we are going to assume that we were testing a rule we're testing a rule that let's say people
+
+08:39.490 --> 08:46.240
+who have seen interstellar right where we have a hypothesis that says that people have seen interstellar.
+
+08:46.330 --> 08:55.500
+They are also or have liked interstellar are also likely to like MSXML in all this.
+
+08:55.540 --> 09:01.810
+Let's even go if some people have seen interstellar are also likely to have seen ex machina.
+
+09:02.200 --> 09:06.370
+So basically here movie number one and one is going to be
+
+09:08.830 --> 09:13.110
+the interstellar movie the one that we're saying.
+
+09:13.230 --> 09:17.110
+So going to take everybody who's in interstellar and we're going to check how many of them have seen
+
+09:17.110 --> 09:17.840
+ex machina.
+
+09:18.070 --> 09:19.980
+And that's exactly what we're doing here.
+
+09:19.990 --> 09:24.460
+And Marquis Buskin optimization same thing you can think of an example of French fries and burgers for
+
+09:24.460 --> 09:24.820
+instance.
+
+09:24.820 --> 09:30.570
+People have had burgers we've ordered burgers also likely to order French fries so at the top you'd
+
+09:30.580 --> 09:34.000
+have people have ordered burgers and French fries and appear at the bottom.
+
+09:34.000 --> 09:39.190
+You have people who have ordered burgers on them who have ordered burgers regardless of whether they've
+
+09:39.510 --> 09:40.730
+ordered French fries not.
+
+09:40.990 --> 09:44.300
+Much easier to talk about this with an illustration.
+
+09:44.350 --> 09:51.970
+Let's say those great people colored in green are the ones who have seen interstellar riot who have
+
+09:53.260 --> 09:54.450
+watched this movie.
+
+09:54.490 --> 09:59.890
+Now we want to know not out of a whole population but out of just those people who have seen or to sell
+
+09:59.900 --> 10:03.100
+or how many of them have seen ex machina.
+
+10:03.100 --> 10:08.920
+So out of them we have seven people who have also seen X machines so there's only seven people who have
+
+10:08.920 --> 10:11.700
+seen both movies that's what we we're after.
+
+10:11.740 --> 10:16.420
+And so our confidence is going to be seven divided by 40 just by definition.
+
+10:16.420 --> 10:18.210
+This is how I was calculated.
+
+10:18.250 --> 10:24.880
+Forty people have seen it yourself and seven people out of those 40 have actually also seen ex machina.
+
+10:24.880 --> 10:29.630
+So the conference here is seventeen point five percent good.
+
+10:29.890 --> 10:34.070
+And the next part or the third and last step is the lift and what is the lift.
+
+10:34.180 --> 10:35.550
+Lift is very simple again.
+
+10:35.590 --> 10:44.950
+It's going to be very similar to what we had in the Navy bays and they've been classifiers in that algorithm
+
+10:44.950 --> 10:46.300
+when we were discussing it.
+
+10:46.330 --> 10:51.450
+So conver the lift is basically the confidence divided by the support.
+
+10:51.610 --> 10:57.430
+So what we calculate in step 2 do but what we calculated in step 1 and let's just talk about it in the
+
+10:57.430 --> 11:00.960
+illustration because it's going to make way more sense that way.
+
+11:00.970 --> 11:03.270
+So here's our population.
+
+11:03.310 --> 11:08.650
+Those people in green are the ones who have seen interstellar and all of these people in red are the
+
+11:08.650 --> 11:10.310
+ones who have seen X machine.
+
+11:10.310 --> 11:19.180
+So basically our lift is all right so if we just randomly right randomly suggest to a person to watch
+
+11:19.210 --> 11:20.230
+ex machina.
+
+11:20.230 --> 11:20.690
+Right.
+
+11:20.860 --> 11:27.940
+What is the likelihood that they will you know that it's a movie for them it's a movie that's not in
+
+11:27.940 --> 11:33.980
+this population like out of this population we know that out of 100 people only 10 actually walks six
+
+11:34.000 --> 11:37.810
+machine and we're going to assume that watched and like are interchangeable terms here.
+
+11:37.810 --> 11:41.640
+So we're going to assume that if they if they didn't watch it they're not going to like it anyway.
+
+11:41.830 --> 11:52.450
+So if we take another random population and then what is the likelihood that if we recommend to a random
+
+11:52.450 --> 11:58.390
+person in that population that brand new population will recommend that they Ex Machina movie what is
+
+11:58.390 --> 12:00.400
+the likelihood that they will like it.
+
+12:00.400 --> 12:06.880
+Well the likelihood is 10 percent right because we only are out of 100 people only 10 of them actually
+
+12:06.880 --> 12:07.940
+liked that movie.
+
+12:08.230 --> 12:14.050
+But now the question is can we prove that result by using some prior knowledge.
+
+12:14.050 --> 12:21.610
+That's why the algorithm is called a priori Ken in that new population let's only recommend ex machina
+
+12:21.880 --> 12:24.220
+to people who have already seen interstellar.
+
+12:24.280 --> 12:29.260
+So people who are marked as green in this population so we will only find out.
+
+12:29.260 --> 12:34.030
+We only ask have you seen interstellar if they have then will recommend next machine what is the likelihood
+
+12:34.330 --> 12:38.580
+that a person will actually like ex machina if we recommend them that way.
+
+12:38.620 --> 12:45.350
+Well in that case the likelihood as we've calculated out of the green people only not only of the people
+
+12:45.350 --> 12:49.510
+at 17 and a half percent actually liked ex machina.
+
+12:49.690 --> 12:55.220
+So the lift is the improvement in your prediction.
+
+12:55.330 --> 12:59.950
+So your original prediction European politicians 10 percent right if you just randomly take a person
+
+12:59.950 --> 13:04.510
+out of your new population and recommend the next mission that they like for a likelihood of 10 percent
+
+13:05.050 --> 13:09.850
+if you first ask the question Have you seen and liked interstellar.
+
+13:10.000 --> 13:15.740
+If they say yes and then you recommend ex machina the likelihood of a successful recommendation there
+
+13:15.760 --> 13:17.190
+is seventeen point five percent.
+
+13:17.320 --> 13:21.600
+So the lift is by definition one point seventy five.
+
+13:21.610 --> 13:22.000
+There we go.
+
+13:22.000 --> 13:26.110
+That is what the lift is defined as.
+
+13:26.500 --> 13:31.640
+And that's pretty much the whole a priori algorithm that's the steps that it involves.
+
+13:31.660 --> 13:40.570
+And now we're just going to put it all together in this one kind of step by step process so step 1 you
+
+13:40.570 --> 13:43.860
+need to set up a minimum support and confidence right.
+
+13:43.870 --> 13:48.860
+So you to want to only because there's so many different recommendations.
+
+13:48.870 --> 13:55.720
+We only looked at one example one specific example to simplify things we talked about ex machina and
+
+13:56.230 --> 13:56.800
+interstellar.
+
+13:56.800 --> 14:02.050
+But as you could see in the examples before that you could have like 100 different movies and the different
+
+14:02.050 --> 14:09.220
+combinations a priori is actually quite a slow algorithm because it just goes through all of these different
+
+14:09.250 --> 14:14.590
+algorithms all of these different combinations so it says what if movie one is a good recommendation
+
+14:14.590 --> 14:20.080
+from movie to movie one means that person will like me to make one means a personal like movie three
+
+14:20.380 --> 14:25.630
+and one movie four and then it actually combines more and says movie you and movie to might mean that
+
+14:25.630 --> 14:27.520
+personal like movie 3 and so on.
+
+14:27.510 --> 14:30.300
+So it actually combines lots and lots and lots of nudges.
+
+14:30.550 --> 14:32.050
+Not triplets.
+
+14:32.080 --> 14:38.370
+Like it combines four five six seven items in one in one set and so on.
+
+14:38.750 --> 14:46.120
+And so it gets quite big and therefore you need to set some kind of limitations so you need to set a
+
+14:46.120 --> 14:46.950
+minimum support.
+
+14:46.960 --> 14:55.350
+For instance you might not want to look at products that are that have a support of less than 20 percent
+
+14:55.360 --> 15:01.770
+you might not even want to consider them because you don't want to waste time building a model for something
+
+15:01.770 --> 15:07.050
+that is only has a success rate of 20 percent on its own right.
+
+15:07.080 --> 15:15.630
+So or you might limit at 5 percent then you might want to also limit it confidence so in our example
+
+15:15.840 --> 15:18.200
+the conference was seventeen point five percent right.
+
+15:18.210 --> 15:23.970
+That's somebody who somebody who liked one movie will like the other one maybe you might want to limit
+
+15:23.970 --> 15:28.590
+it at anything less than 12 percent.
+
+15:28.590 --> 15:34.770
+You don't want to look at it because it's not a strong enough facts for you is not a strong enough rule
+
+15:34.770 --> 15:40.160
+for you because there is going to be so many different rules on the output of this algorithm.
+
+15:40.180 --> 15:44.490
+You already know that you'll have much stronger ones so you don't want to consider anything that's less
+
+15:44.490 --> 15:50.370
+than 12 percent or 20 percent or whatever percentage you decide to set for in that specific scenario.
+
+15:50.850 --> 15:56.940
+Then once you've set those and you take all the subsets in transactions having higher support than minimum
+
+15:57.360 --> 15:59.840
+then the minimum Sopore take all the rules of the subset.
+
+15:59.850 --> 16:03.820
+Having high confidence and mean in-conference basically apply those to minimums that you've set.
+
+16:04.050 --> 16:08.540
+And then at the end of course is sort the rules by the decreasing lift.
+
+16:08.550 --> 16:10.110
+So that's where the lift comes in.
+
+16:10.230 --> 16:17.310
+The rule of the highest lift given these criteria is going to be the strongest rule and that's the one
+
+16:17.310 --> 16:19.390
+you might want to look into first right.
+
+16:19.470 --> 16:25.770
+Something like I don't know if a person buys a burger and French fries then they're likely to buy tomato
+
+16:25.770 --> 16:27.730
+sauce or ketchup as well.
+
+16:27.930 --> 16:32.630
+And because you know and that some of that sometimes it makes sense right because you need ketchup to
+
+16:32.970 --> 16:38.580
+a lot of people like to eat catch up with their burgers and french fries so busy you find the ones with
+
+16:38.580 --> 16:43.330
+the highest lift and those are the ones in the top 10 or top five and those are the ones that you consider
+
+16:43.330 --> 16:48.630
+for actually implementing a business decision and basing it on them.
+
+16:48.840 --> 16:52.900
+So that's pretty much how the a priori algorithm works.
+
+16:53.130 --> 16:57.060
+It was quite a long story but I thought we had some some good fun here.
+
+16:57.170 --> 17:02.340
+This is another example that I wanted to share with you.
+
+17:02.860 --> 17:03.350
+OK.
+
+17:03.360 --> 17:09.540
+So I just wanted to mention that recommender systems like things like companies like Amazon News and
+
+17:09.570 --> 17:18.030
+others and Netflix and so on they're like a good there would be or they would be a good example for
+
+17:18.300 --> 17:19.370
+using a priori.
+
+17:19.360 --> 17:25.110
+A priori would be good there but of course they are much more sophisticated than not just a priori.
+
+17:25.110 --> 17:33.900
+They actually use combinations are very specific or specifically designed algorithms so I just don't
+
+17:33.900 --> 17:35.860
+want you to be confused that a priori.
+
+17:35.980 --> 17:37.480
+That means that everything uses a prayer.
+
+17:37.550 --> 17:43.460
+Prayer is just a basic kind of straightforward approach to solving this problem.
+
+17:43.470 --> 17:50.060
+And it's a good example of you know how it can be done but of course there are other ways of doing it.
+
+17:50.060 --> 17:55.560
+And for instance we'll look at the look at some other methods and in fact some of the methods that we
+
+17:55.560 --> 17:59.580
+already use can be used to build recommender systems as well.
+
+17:59.580 --> 17:59.850
+All right.
+
+17:59.850 --> 18:01.260
+So on that note.
+
+18:01.450 --> 18:10.170
+Thank you for attention and off we go to lunch to look at how we can code a priori in our and Python
+
+18:10.290 --> 18:11.610
+and all see here next time.
+
+18:11.610 --> 18:13.160
+Until then happy analyzing.
