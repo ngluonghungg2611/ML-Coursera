@@ -16,3 +16,8 @@ def standardization(img):
      mu = img.mean()
      std = img.std()
      return (img - mu) / std
+
+img = cv2.imread('test111.png')
+print(devide_by_max(img),'\n')
+print(min_max_scaking(img),'\n')
+print(standardization(img),'\n')
