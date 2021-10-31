@@ -1,7 +1,7 @@
 import cv2
 img = cv2.imread('skew_image.PNG')
-# cv2.imshow('skew image', img)
-# cv2.waitKey(0)
+cv2.imshow('skew image', img)
+cv2.waitKey(0)
 
 #   Detec the box
   
@@ -12,7 +12,9 @@ contours, _ = cv2.findContours(threshold_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_
 
 contours = sorted(contours, key=cv2.contourArea, reverse=True) # reverse = True de giam dan
 max_contours = contours[0]
-
+cv2.drawContours(threshold_image, contours, -1, (255,0,0), 3)
+cv2.imshow('skew image', threshold_image)
+cv2.waitKey(0)
 angle=cv2.minAreaRect(max_contours)[-1] # Ham nay tra ve bo gia tri (x, y) va (w,h) va (goc). Va chung ta can lay ra goc
 if angle < -45:
     angle = 90 + angle
