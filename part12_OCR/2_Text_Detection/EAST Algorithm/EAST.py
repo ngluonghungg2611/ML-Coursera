@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from numpy.core.defchararray import center
-img = cv2.imread('skew_image.PNG')
+img = cv2.imread('EAST iamge.png')
 cv2.imshow('original image', img)
 cv2.waitKey(0)
 model = cv2.dnn.readNet('frozen_east_text_detection.pb')
