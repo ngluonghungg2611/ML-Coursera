@@ -3,7 +3,7 @@ import cv2
 # import pytesseract
 from imutils.object_detection import non_max_suppression
 #   Preprocess image
-img = cv2.imread('skew_image.png')
+img = cv2.imread('stop_2.png')
 model= cv2.dnn.readNet('frozen_east_text_detection.pb')
 img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 _, threshold_img = cv2.threshold(img_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
@@ -63,18 +63,18 @@ for i in range(geometry.shape[2]):
 from imutils.object_detection import non_max_suppression 
 find_boxes = non_max_suppression(np.array(rectangles), probs=confidence_score, overlapThresh=0.5)
 img_copy = dst.copy()
-
+texts = []
 for (x1,y1, x2,y2) in find_boxes:
     x1 = int(x1 * w_ratio)
     y1 = int(y1 * h_ratio)
     x2 = int(x2 * w_ratio)
     y2 = int(y2 * h_ratio)
     cv2.rectangle(img_copy, (x1, y1), (x2, y2), (255,255,0), 2)
-
+    roi_text = img_copy[y1: y2, x1: x2]
+    img_text = "stop_2_texts\\" + str(x1) + "_" + str(y1) + "_img_text.png"
+    cv2.imwrite(img_text, roi_text)
+    
 cv2.imshow('original', img)
 cv2.imshow('deskew image', dst)
 cv2.imshow('detect image', img_copy)
-print(img.shape)
-print(dst.shape)
-print(img_copy.shape)
 cv2.waitKey(0)
